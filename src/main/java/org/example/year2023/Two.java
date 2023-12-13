@@ -12,6 +12,7 @@ public class Two {
     public static int green = 13;
     public static int blue = 14;
     public static int sumOfIndex = 0;
+    public static int sumOfPower = 0;
 
     public static int checkLines() {
 //        lines.add("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green");
@@ -33,10 +34,13 @@ public class Two {
             System.out.println("Wynik to:" + sumLine(line));
 
             sumOfIndex = sumOfIndex + sumLine(line);
+            sumOfPower = sumOfPower + calculatePower(line);
         }
         System.out.println("Suma indeksów to: " + sumOfIndex);
+        System.out.println("Power to: " + sumOfPower );
         return sumOfIndex;
     }
+
 
     public static int sumLine(String inputString) {
 
@@ -49,6 +53,7 @@ public class Two {
         for (String game : games) {
             System.out.println("&" + index + "&");
             System.out.println(game);
+
             String[] colors = game.split(",");
             for (String color : colors) {
                 //    System.out.println(color);
@@ -57,7 +62,7 @@ public class Two {
                 //    if (colors.length == 3) {
                 int numberOfCubes = Integer.valueOf(parts[1]);
                 String colorOfCubes = parts[2];
-                    System.out.println("Number: " + numberOfCubes + " Color: " + colorOfCubes);
+                System.out.println("Number: " + numberOfCubes + " Color: " + colorOfCubes);
                 if (colorOfCubes.equals("red") && numberOfCubes > red) {
                     index = 0;
                 }
@@ -71,7 +76,40 @@ public class Two {
             }
         }
         return index;
-
-
     }
-}
+
+        public static int calculatePower(String inputString) {
+            String[] substrings = inputString.split(":");
+            String[] games = substrings[1].split(";");
+            String[] gameIndex = substrings[0].split(" ");
+
+            int power = 0;
+            int maxRed = 1;
+            int maxBlue = 1;
+            int maxGreen = 1;
+
+            for (String game : games) {
+                System.out.println(game);
+                String[] colors = game.split(",");
+                for (String color : colors) {
+                    String[] parts = color.split(" ");
+                    int numberOfCubes = Integer.valueOf(parts[1]);
+                    String colorOfCubes = parts[2];
+                    System.out.println("Number: " + numberOfCubes + " Color: " + colorOfCubes);
+                    if (colorOfCubes.equals("red") && numberOfCubes>maxRed)   {
+                        maxRed = numberOfCubes;
+                    }
+                    if (colorOfCubes.equals("blue") && numberOfCubes > maxBlue) {
+                        maxBlue = numberOfCubes;
+                    }
+                    if (colorOfCubes.equals("green") && numberOfCubes > maxGreen) {
+                        maxGreen = numberOfCubes;
+//
+                    }
+                }
+            }
+            power = maxRed * maxGreen * maxBlue;
+            return power;
+        }
+    }
+
